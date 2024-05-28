@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Nowadays.Models;
-using Nowadays.Models.ValueObject;
+using Nowadays.Core.Entities;
+using Nowadays.Core.ValueObject;
 
-namespace Nowadays.EFCoreDbContext
+namespace Nowadays.DataAccess.Persistence
 {
     public class NowadaysDbContext : DbContext
     {
