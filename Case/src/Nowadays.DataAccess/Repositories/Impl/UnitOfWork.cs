@@ -1,11 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Nowadays.EFCoreDbContext;
-using Nowadays.Models;
-using Nowadays.Models.ValueObject;
-using Nowadays.Repositories.Abstract;
-using Nowadays.Repositories.Concrete.Base;
+﻿using Nowadays.Core.Entities;
+using Nowadays.Core.ValueObject;
+using Nowadays.DataAccess.Persistence;
 
-namespace Nowadays.Repositories.Concrete
+namespace Nowadays.DataAccess.Repositories.Impl
 {
     public class UnitOfWork : IUnitOfWork
     {
