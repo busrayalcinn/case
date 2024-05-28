@@ -30,6 +30,9 @@
             "projectReferences": {
               "C:\\Users\\busra\\Documents\\GitHub\\case\\Case\\src\\Nowadays.Application\\Nowadays.Application.csproj": {
                 "projectPath": "C:\\Users\\busra\\Documents\\GitHub\\case\\Case\\src\\Nowadays.Application\\Nowadays.Application.csproj"
+              },
+              "C:\\Users\\busra\\Documents\\GitHub\\case\\Case\\src\\Nowadays.DataAccess\\Nowadays.DataAccess.csproj": {
+                "projectPath": "C:\\Users\\busra\\Documents\\GitHub\\case\\Case\\src\\Nowadays.DataAccess\\Nowadays.DataAccess.csproj"
               }
             }
           }

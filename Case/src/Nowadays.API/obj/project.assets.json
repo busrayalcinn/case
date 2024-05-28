@@ -3530,6 +3530,7 @@
     "net7.0": [
       "Microsoft.AspNetCore.OpenApi >= 7.0.11",
       "Nowadays.Application >= 1.0.0",
+      "Nowadays.DataAccess >= 1.0.0",
       "Swashbuckle.AspNetCore >= 6.5.0"
     ]
   },
@@ -3562,6 +3563,9 @@
           "projectReferences": {
             "C:\\Users\\busra\\Documents\\GitHub\\case\\Case\\src\\Nowadays.Application\\Nowadays.Application.csproj": {
               "projectPath": "C:\\Users\\busra\\Documents\\GitHub\\case\\Case\\src\\Nowadays.Application\\Nowadays.Application.csproj"
+            },
+            "C:\\Users\\busra\\Documents\\GitHub\\case\\Case\\src\\Nowadays.DataAccess\\Nowadays.DataAccess.csproj": {
+              "projectPath": "C:\\Users\\busra\\Documents\\GitHub\\case\\Case\\src\\Nowadays.DataAccess\\Nowadays.DataAccess.csproj"
             }
           }
         }
