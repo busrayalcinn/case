@@ -1,4 +1,4 @@
-﻿namespace Nowadays.Models.Enum
+﻿namespace Nowadays.Core.Enum
 {
     public class BaseEnum
     {

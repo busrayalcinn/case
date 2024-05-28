@@ -1,7 +1,7 @@
-﻿using Nowadays.Models.Base;
-using static Nowadays.Models.Enum.BaseEnum;
+﻿using Nowadays.Core.Common;
+using static Nowadays.Core.Enum.BaseEnum;
 
-namespace Nowadays.Models
+namespace Nowadays.Core.Entities
 {
     public class Issue : BaseEntity
     {
