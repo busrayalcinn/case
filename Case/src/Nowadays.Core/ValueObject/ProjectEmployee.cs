@@ -1,6 +1,7 @@
-﻿using Nowadays.Models.Base;
+﻿using Nowadays.Core.Common;
+using Nowadays.Core.Entities;
 
-namespace Nowadays.Models.ValueObject
+namespace Nowadays.Core.ValueObject
 {
     public class ProjectEmployee : BaseEntity
     {

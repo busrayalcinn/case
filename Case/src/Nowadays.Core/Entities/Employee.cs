@@ -1,9 +1,7 @@
-﻿using Nowadays.Models.Base;
-using Nowadays.Models.ValueObject;
-using System.ComponentModel.DataAnnotations;
-using System.Text.Json.Serialization;
+﻿using Nowadays.Core.Common;
+using Nowadays.Core.ValueObject;
 
-namespace Nowadays.Models
+namespace Nowadays.Core.Entities
 {
     public class Employee : BaseEntity
     {
