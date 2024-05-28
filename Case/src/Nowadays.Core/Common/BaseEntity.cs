@@ -1,4 +1,4 @@
-﻿namespace Nowadays.Models.Base
+﻿namespace Nowadays.Core.Common
 {
     public class BaseEntity
     {
