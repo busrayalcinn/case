@@ -1,12 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Nowadays.Models.ResponseModels;
-using Nowadays.Models;
-using Nowadays.Services.Abstract;
-using Nowadays.Services.Concrete;
-using Nowadays.Models.DTOs;
+﻿using Microsoft.AspNetCore.Mvc;
+using Nowadays.Application.Models.Report;
+using Nowadays.Application.Services;
 
-namespace Nowadays.Controllers
+namespace Nowadays.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -19,7 +15,7 @@ namespace Nowadays.Controllers
             _reportService = reportService;
         }
         [HttpGet("{id}")]
-        public async Task<ResponseModel<ReportDTO>> GetReportByCompanyId(string id)
+        public async Task<ReportDTO> GetReportByCompanyId(string id)
         {
             var report = await _reportService.GetReportByCompanyId(id);
             return report;

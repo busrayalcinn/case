@@ -1,15 +1,13 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Nowadays.Models.ResponseModels;
-using Nowadays.Models;
-using Nowadays.Services.Abstract;
-using Nowadays.Services.Concrete;
-using Nowadays.Models.ValueObject;
-using AutoMapper;
-using Nowadays.Models.DTOs;
+﻿using AutoMapper;
 using IdentityService;
+using Microsoft.AspNetCore.Mvc;
+using Nowadays.Application.Models.Employee;
+using Nowadays.Application.Models.Project;
+using Nowadays.Application.Services;
+using Nowadays.Core.Entities;
+using Nowadays.Core.ValueObject;
 
-namespace Nowadays.Controllers
+namespace Nowadays.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -23,19 +21,19 @@ namespace Nowadays.Controllers
             _mapper = mapper;
         }
         [HttpGet]
-        public async Task<ResponseModel<IEnumerable<Employee>>> GetAllEmployee()
+        public async Task<IEnumerable<Employee>> GetAllEmployee()
         {
             var employeeList = await _employeeService.GetAll();
             return employeeList;
         }
         [HttpGet("{id}")]
-        public async Task<ResponseModel<Employee>> GetEmployee(string id)
+        public async Task<Employee> GetEmployee(string id)
         {
             var employee = await _employeeService.GetById(id);
             return employee;
         }
         [HttpPost]
-        public async Task<ResponseModel> CreateEmployee([FromBody] EmployeeDTO employee)
+        public async Task<Employee> CreateEmployee([FromBody] EmployeeDTO employee)
         {
             var employeeModel = _mapper.Map<Employee>(employee);
             bool result = await IdentityVerification(employee);
@@ -43,21 +41,21 @@ namespace Nowadays.Controllers
             return response;
         }
         [HttpPut]
-        public async Task<ResponseModel> AssingEmployeeToProject([FromBody] ProjectEmployeeDTO projectEmployee)
+        public async Task<ProjectEmployee> AssingEmployeeToProject([FromBody] ProjectEmployeeDTO projectEmployee)
         {
             var projectEmployeeModel = _mapper.Map<ProjectEmployee>(projectEmployee);
             var response = await _employeeService.AssignEmployeeToProject(projectEmployeeModel);
             return response;
         }
         [HttpPut("{id}")]
-        public async Task<ResponseModel> AssingEmployeeToProject(string id,[FromBody] EmployeeSettingDTO employee)
+        public async Task<Employee> AssingEmployeeToProject(string id,[FromBody] EmployeeSettingDTO employee)
         {
             var projectEmployeeModel = _mapper.Map<Employee>(employee);
             var response = await _employeeService.UpdateEmployeeSettingAsync(id,projectEmployeeModel);
             return response;
         }
         [HttpDelete("{id}")]
-        public async Task<ResponseModel> DeleteEmployee(string id)
+        public async Task<Employee> DeleteEmployee(string id)
         {
             var response = await _employeeService.DeleteAsync(id);
             return response;

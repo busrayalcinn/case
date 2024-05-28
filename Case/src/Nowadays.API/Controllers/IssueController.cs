@@ -1,15 +1,13 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Nowadays.Models.ResponseModels;
-using Nowadays.Models.ValueObject;
-using Nowadays.Models;
-using Nowadays.Services.Abstract;
-using Nowadays.Services.Concrete;
-using Nowadays.Models.DTOs;
-using AutoMapper;
-using static Nowadays.Models.Enum.BaseEnum;
+using Nowadays.Application.Models.Issue;
+using Nowadays.Application.Services;
+using Nowadays.Core.Entities;
+using Nowadays.Core.Enum;
+using static Nowadays.Core.Enum.BaseEnum;
 
-namespace Nowadays.Controllers
+namespace Nowadays.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -24,58 +22,59 @@ namespace Nowadays.Controllers
             _mapper = mapper;
         }
         [HttpGet]
-        public async Task<ResponseModel<IEnumerable<Issue>>> GetAllIssue()
+        public async Task<IEnumerable<Issue>> GetAllIssue()
         {
             var issueList = await _issueService.GetAll();
             return issueList;
         }
         [HttpGet("{id}")]
-        public async Task<ResponseModel<Issue>> GetIssue(string id)
+        public async Task<Issue> GetIssue(string id)
         {
             var issue = await _issueService.GetById(id);
             return issue;
         }
         [HttpPost]
-        public async Task<ResponseModel> CreateIssue([FromBody] IssueDTO issue)
+        public async Task<Issue> CreateIssue([FromBody] IssueDTO issue)
         {
             var issueModel = _mapper.Map<Issue>(issue);
-            issueModel.Status = Models.Enum.BaseEnum.StatusType.SELECTED_FOR_DEVELOPMENT;
+
+            issueModel.Status = BaseEnum.StatusType.SELECTED_FOR_DEVELOPMENT;
             var response = await _issueService.InsertAsync(issueModel);
             return response;
         }
         [HttpPut("{id}")]
-        public async Task<ResponseModel> ChangeIssueSetting(string id, [FromBody] IssueSettingDTO ıssueSetting)
+        public async Task<Issue> ChangeIssueSetting(string id, [FromBody] IssueSettingDTO ıssueSetting)
         {
             var response = await _issueService.ChangeIssueSetting(id, ıssueSetting);
             return response;
         }
         [HttpPatch("{id}/changeStatus")]
-        public async Task<ResponseModel> ChangeStatus(string id,[FromBody]StatusType statusType)
+        public async Task<Issue> ChangeStatus(string id,[FromBody]StatusType statusType)
         {
             var response = await _issueService.ChangeStatus(id,statusType);
             return response;
         }
         [HttpPatch("{id}/updateDescription")]
-        public async Task<ResponseModel> UpdateDescription(string id,[FromBody] string Description)
+        public async Task<Issue> UpdateDescription(string id,[FromBody] string Description)
         {
             var response = await _issueService.UpdateDescription(id, Description);
             return response;
         }
         [HttpPatch("assignEmployee/{id}/{employeeId}")]
-        public async Task<ResponseModel> UpdateIssueAssignEmployee(string id, string employeeId)
+        public async Task<Issue> UpdateIssueAssignEmployee(string id, string employeeId)
         {
             var response = await _issueService.UpdateIssueAssignEmployee(id, employeeId);
             return response;
         }
         [HttpPatch("{id}/{reportingEmployeeId}")]
-        public async Task<ResponseModel> UpdateIssueReportingEmployee(string id, string reportingEmployeeId)
+        public async Task<Issue> UpdateIssueReportingEmployee(string id, string reportingEmployeeId)
         {
             var response = await _issueService.UpdateIssueReportingEmployee(id, reportingEmployeeId);
             return response;
         }
 
         [HttpDelete("{id}")]
-        public async Task<ResponseModel> DeleteIssue(string id)
+        public async Task<Issue> DeleteIssue(string id)
         {
             var response = await _issueService.DeleteAsync(id);
             return response;

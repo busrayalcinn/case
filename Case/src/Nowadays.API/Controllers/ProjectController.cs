@@ -1,13 +1,11 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Nowadays.Models.ResponseModels;
-using Nowadays.Models;
-using Nowadays.Services.Abstract;
-using Nowadays.Services.Concrete;
-using Nowadays.Models.DTOs;
+﻿
 using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
+using Nowadays.Application.Models.Project;
+using Nowadays.Application.Services;
+using Nowadays.Core.Entities;
 
-namespace Nowadays.Controllers
+namespace Nowadays.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -21,33 +19,33 @@ namespace Nowadays.Controllers
             _mapper = mapper;
         }
         [HttpGet]
-        public async Task<ResponseModel<IEnumerable<Project>>> GetAllProject()
+        public async Task<IEnumerable<Project>> GetAllProject()
         {
             var projectList = await _projectService.GetAll();
             return projectList;
         }
         [HttpGet("{id}")]
-        public async Task<ResponseModel<Project>> GetProject(string id)
+        public async Task<Project> GetProject(string id)
         {
             var project = await _projectService.GetById(id);
             return project;
         }
         [HttpPost]
-        public async Task<ResponseModel> CreateProject([FromBody] ProjectDTO project)
+        public async Task<Project> CreateProject([FromBody] ProjectDTO project)
         {
             var projectModel = _mapper.Map<Project>(project);
             var response = await _projectService.InsertAsync(projectModel);
             return response;
         }
         [HttpPut("{id}")]
-        public async Task<ResponseModel> UpdateProject(string id,[FromBody] ProjectSettingDTO project)
+        public async Task<Project> UpdateProject(string id,[FromBody] ProjectSettingDTO project)
         {
             var projectModel = _mapper.Map<Project>(project);
             var response = await _projectService.UpdateAsync(id,projectModel);
             return response;
         }
         [HttpDelete("{id}")]
-        public async Task<ResponseModel> DeleteProject(string id)
+        public async Task<Project> DeleteProject(string id)
         {
             var response = await _projectService.DeleteAsync(id);
             return response;

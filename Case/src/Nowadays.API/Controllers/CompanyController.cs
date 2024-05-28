@@ -1,12 +1,10 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Nowadays.Models;
-using Nowadays.Models.DTOs;
-using Nowadays.Models.ResponseModels;
-using Nowadays.Services.Abstract;
+using Nowadays.Application.Models.Company;
+using Nowadays.Application.Services;
+using Nowadays.Core.Entities;
 
-namespace Nowadays.Controllers
+namespace Nowadays.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -21,32 +19,32 @@ namespace Nowadays.Controllers
             _mapper = mapper;
         }
         [HttpGet]
-        public async Task<ResponseModel<IEnumerable<Company>>> GetAllCompany()
+        public async Task<IEnumerable<Company>> GetAllCompany()
         {
             var companyList = await _companyService.GetAll();
             return companyList;
         }
         [HttpGet("{id}")]
-        public async Task<ResponseModel<Company>> GetCompany(string id)
+        public async Task<Company> GetCompany(string id)
         {
             var company = await _companyService.GetCompanyById(id);
             return company;
         }
         [HttpPost]
-        public async Task<ResponseModel> CreateCompany([FromBody]CompanyDTO company)
+        public async Task<Company> CreateCompany([FromBody] CompanyDTO company)
         {
             var companyModel = _mapper.Map<Company>(company);
             var response = await _companyService.InsertAsync(companyModel);
             return response;
         }
         [HttpPut("{id}")]
-        public async Task<ResponseModel> UpdateCompanyName(string id, [FromBody]string name)
+        public async Task<Company> UpdateCompanyName(string id, [FromBody] string name)
         {
             var response = await _companyService.UpdateCompanyNameAsync(id,name);
             return response;
         }
         [HttpDelete("{id}")]
-        public async Task<ResponseModel> DeleteCompany(string id)
+        public async Task<Company> DeleteCompany(string id)
         {
             var response = await _companyService.DeleteAsync(id);
             return response;
