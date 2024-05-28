@@ -1,6 +1,6 @@
-﻿using Nowadays.Models.Base;
+﻿using Nowadays.Core.Common;
 
-namespace Nowadays.Models
+namespace Nowadays.Core.Entities
 {
     public class Company : BaseEntity
     {
