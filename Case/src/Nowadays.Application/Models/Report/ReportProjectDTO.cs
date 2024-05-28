@@ -1,6 +1,4 @@
-﻿using Nowadays.Models.ValueObject;
-
-namespace Nowadays.Models.DTOs
+﻿namespace Nowadays.Application.Models.Report
 {
     public class ReportProjectDTO
     {

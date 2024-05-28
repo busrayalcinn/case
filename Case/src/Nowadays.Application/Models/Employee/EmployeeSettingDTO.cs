@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Nowadays.Models.DTOs
+namespace Nowadays.Application.Models.Employee
 {
     public class EmployeeSettingDTO
     {

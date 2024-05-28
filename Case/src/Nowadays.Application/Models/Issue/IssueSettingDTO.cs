@@ -1,4 +1,4 @@
-﻿namespace Nowadays.Models.DTOs
+﻿namespace Nowadays.Application.Models.Issue
 {
     public class IssueSettingDTO
     {

@@ -1,4 +1,4 @@
-﻿namespace Nowadays.Models.DTOs
+﻿namespace Nowadays.Application.Models.Report
 {
     public class ReportCompanyDTO
     {

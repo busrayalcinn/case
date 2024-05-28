@@ -1,6 +1,6 @@
-﻿using static Nowadays.Models.Enum.BaseEnum;
+﻿using static Nowadays.Core.Enum.BaseEnum;
 
-namespace Nowadays.Models.DTOs
+namespace Nowadays.Application.Models.Issue
 {
     public class IssueDTO
     {

@@ -1,9 +1,13 @@
 ﻿using AutoMapper;
-using Nowadays.Models;
-using Nowadays.Models.DTOs;
-using Nowadays.Models.ValueObject;
+using Nowadays.Application.Models.Company;
+using Nowadays.Application.Models.Employee;
+using Nowadays.Application.Models.Issue;
+using Nowadays.Application.Models.Project;
+using Nowadays.Application.Models.Report;
+using Nowadays.Core.Entities;
+using Nowadays.Core.ValueObject;
 
-namespace Nowadays.Mapper
+namespace Nowadays.Application.MappingProfiles
 {
     public class AutoMapperProfiles : Profile
     {
