@@ -1,11 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Nowadays.EFCoreDbContext;
-using Nowadays.Models;
-using Nowadays.Models.ResponseModels;
-using Nowadays.Repositories.Abstract;
-using Nowadays.Repositories.Concrete.Base;
+using Nowadays.Core.Entities;
+using Nowadays.DataAccess.Persistence;
 
-namespace Nowadays.Repositories.Concrete
+namespace Nowadays.DataAccess.Repositories.Impl
 {
     public class ProjectRepository : BaseRepository<Project>, IProjectRepository
     {
@@ -16,10 +13,10 @@ namespace Nowadays.Repositories.Concrete
             _context = context;
             _projects = _context.Set<Project>();
         }
-        public async Task<ResponseModel<List<Project>>> GetProjectByCompanyId(string companyId)
+        public async Task<List<Project>> GetProjectByCompanyId(string companyId)
         {
             var project = await _projects.Where(x => x.CompanyId == companyId).ToListAsync();
-            return new ResponseModel<List<Project>>(project);
+            return project;
         }
     }   
 }

@@ -1,7 +1,6 @@
-﻿using Nowadays.Models;
-using Nowadays.Repositories.Abstract.Base;
+﻿using Nowadays.Core.Entities;
 
-namespace Nowadays.Repositories.Abstract
+namespace Nowadays.DataAccess.Repositories
 {
     public interface IUnitOfWork 
     {

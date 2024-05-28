@@ -1,7 +1,6 @@
 ﻿using Nowadays.Models.Base;
 using Nowadays.Models.ResponseModels;
 using Nowadays.Repositories.Abstract;
-using Nowadays.Repositories.Abstract.Base;
 using Nowadays.Services.Abstract.Base;
 
 namespace Nowadays.Services.Concrete.Base

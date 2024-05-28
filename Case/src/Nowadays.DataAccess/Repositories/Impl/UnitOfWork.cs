@@ -3,7 +3,6 @@ using Nowadays.EFCoreDbContext;
 using Nowadays.Models;
 using Nowadays.Models.ValueObject;
 using Nowadays.Repositories.Abstract;
-using Nowadays.Repositories.Abstract.Base;
 using Nowadays.Repositories.Concrete.Base;
 
 namespace Nowadays.Repositories.Concrete
