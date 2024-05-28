@@ -1,11 +1,7 @@
-﻿using Nowadays.Models;
-using Nowadays.Models.ResponseModels;
-using Nowadays.Repositories.Abstract;
-using Nowadays.Repositories.Concrete.Base;
-using Nowadays.Services.Abstract;
-using Nowadays.Services.Concrete.Base;
+﻿using Nowadays.Core.Entities;
+using Nowadays.DataAccess.Repositories;
 
-namespace Nowadays.Services.Concrete
+namespace Nowadays.Application.Services.Impl
 {
     public class ProjectService : BaseService<Project>, IProjectService
     {
@@ -18,7 +14,7 @@ namespace Nowadays.Services.Concrete
             _unitOfWork = unitOfWork;
             _companyRepository = companyRepository;
         }
-        public override async Task<ResponseModel> InsertAsync(Project project)
+        public override async Task<Project> InsertAsync(Project project, bool? tckimliknodogrulamaResult = null )
         {
             try
             {
@@ -28,33 +24,33 @@ namespace Nowadays.Services.Concrete
                     throw new Exception("Company Id is not valid.");
                 }
                 var result = await _repository.InsertAsync(project);
-                await _unitOfWork.CompleteTaskAsync();
+                _unitOfWork.CompleteTask();
                 return result;
             }
             catch (Exception ex)
             {
-                return new ResponseModel(400, ex.Message);
+                throw ex;
             }
         }
-        public override async Task<ResponseModel> UpdateAsync(string id, Project updatedProject)
+        public override async Task<Project> UpdateAsync(string id, Project updatedProject)
         {
             try
             {
                 var project = await _repository.GetById(id);
-                if (project.Model is null)
+                if (project is null)
                 {
                     throw new Exception("Data is not found");
                 }
-                project.Model.ProjectLeader = updatedProject.ProjectLeader != default ? updatedProject.ProjectLeader : project.Model.ProjectLeader;
-                project.Model.ProjectKey = updatedProject.ProjectKey != default ? updatedProject.ProjectKey : project.Model.ProjectKey;
-                project.Model.Name = updatedProject.Name != default ? updatedProject.Name : project.Model.Name;
-                var result = _repository.Update(project.Model);
-                await _unitOfWork.CompleteTaskAsync();
+                project.ProjectLeader = updatedProject.ProjectLeader != default ? updatedProject.ProjectLeader : project.ProjectLeader;
+                project.ProjectKey = updatedProject.ProjectKey != default ? updatedProject.ProjectKey : project.ProjectKey;
+                project.Name = updatedProject.Name != default ? updatedProject.Name : project.Name;
+                var result = _repository.Update(project);
+                _unitOfWork.CompleteTask();
                 return result;
             }
             catch (Exception ex)
             {
-                return new ResponseModel(404, ex.Message);
+                throw ex;
             }
         }
     }

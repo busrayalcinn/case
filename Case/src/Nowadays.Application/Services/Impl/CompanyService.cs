@@ -1,11 +1,8 @@
-﻿using Nowadays.Models;
-using Nowadays.Models.ResponseModels;
-using Nowadays.Repositories.Abstract;
-using Nowadays.Repositories.Concrete;
-using Nowadays.Services.Abstract;
-using Nowadays.Services.Concrete.Base;
+﻿using Nowadays.Application.Services.Impl;
+using Nowadays.Core.Entities;
+using Nowadays.DataAccess.Repositories;
 
-namespace Nowadays.Services.Concrete
+namespace  Nowadays.Application.Services.Impl
 {
     public class CompanyService : BaseService<Company>, ICompanyService
     {
@@ -18,29 +15,29 @@ namespace Nowadays.Services.Concrete
             _companyRepository = companyRepository;
             _projectRepository = projectRepository;
         }
-        public async Task<ResponseModel<Company>> GetCompanyById(string id)
+        public async Task<Company> GetCompanyById(string id)
         {
             var company = await _companyRepository.GetById(id);
             var companyProjects = await _projectRepository.GetProjectByCompanyId(id);
-            if(companyProjects.Model != null)
+            if(companyProjects != null)
             {
-                company.Model.Project = new List<Project>(companyProjects.Model);
+                company.Project = new List<Project>(companyProjects);
             }
             return company;          
         }
-        public async Task<ResponseModel> UpdateCompanyNameAsync(string id, string name)
+        public async Task<Company> UpdateCompanyNameAsync(string id, string name)
         {
             try
             {
                 var company = await _companyRepository.GetById(id);
-                company.Model.Name = name != default ? name : company.Model.Name;
-                var result = _companyRepository.Update(company.Model);
-                await _unitOfWork.CompleteTaskAsync();
+                company.Name = name != default ? name : company.Name;
+                var result = _companyRepository.Update(company);
+                _unitOfWork.CompleteTask();
                 return result;
             }
             catch(Exception ex)
             {
-                return new ResponseModel(404, ex.Message);
+               throw new Exception($"{id}: {name}", ex);
             }
 
         }

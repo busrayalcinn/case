@@ -1,12 +1,9 @@
 ﻿using AutoMapper;
-using Nowadays.Models;
-using Nowadays.Models.DTOs;
-using Nowadays.Models.ResponseModels;
-using Nowadays.Repositories.Abstract;
-using Nowadays.Repositories.Concrete;
-using Nowadays.Services.Abstract;
-using Nowadays.Services.Concrete.Base;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
+using Nowadays.Application.Models.Report;
+using Nowadays.Application.Services;
+using Nowadays.Application.Services.Impl;
+using Nowadays.Core.Entities;
+using Nowadays.DataAccess.Repositories;
 
 namespace Nowadays.Services.Concrete
 {
@@ -25,31 +22,31 @@ namespace Nowadays.Services.Concrete
             _projectEmployeeRepository = projectEmployeeRepository;
             _employeeRepository = employeeRepository;
         }
-        public async Task<ResponseModel<ReportDTO>> GetReportByCompanyId(string id)
+        public async Task<ReportDTO> GetReportByCompanyId(string id)
         {
             var companies = await _companyRepository.GetById(id);
-            var companyReportModel = _mapper.Map<ReportCompanyDTO>(companies.Model);
+            var companyReportModel = _mapper.Map<ReportCompanyDTO>(companies);
             var projects = await _projectRepository.GetProjectByCompanyId(id);
 
-            foreach (var project in projects.Model)
+            foreach (var project in projects)
             {
                 var projectEmployees = await _projectEmployeeRepository.GetByProjectId(project.Id);
                 if(project.ProjectEmployees == null)
                 {
-                    project.ProjectEmployees = new List<Models.ValueObject.ProjectEmployee>(projectEmployees.Model);
+                    project.ProjectEmployees = new List<Core.ValueObject.ProjectEmployee>(projectEmployees);
                 }
                 else
                 {
-                    project.ProjectEmployees.AddRange(projectEmployees.Model);
+                    project.ProjectEmployees.AddRange(projectEmployees);
                 }
                 
             }
 
             var deneme = new List<ReportProjectDTO>();
 
-            if (projects.Model != null)
+            if (projects != null)
             {
-                foreach(var project in projects.Model)
+                foreach(var project in projects)
                 {
                     var projectReportModel = _mapper.Map<ReportProjectDTO>(project);
                     foreach(var employee in project.ProjectEmployees)
@@ -57,7 +54,7 @@ namespace Nowadays.Services.Concrete
                         var projectEmployee = await _employeeRepository.GetById(employee.EmployeeId);
                         var projectEmployeeModel = new ReportEmployeeDTO
                         {
-                            FullName = projectEmployee.Model.Name + " " + projectEmployee.Model.SurName,
+                            FullName = projectEmployee.Name + " " + projectEmployee.SurName,
                             CountAssignedIssues = employee.CountAssignedIssues,
                             CountCompletedIssues = employee.CountCompletedIssues
                         };
@@ -86,7 +83,12 @@ namespace Nowadays.Services.Concrete
                 Company = companyReportModel
             };
 
-            return new ResponseModel<ReportDTO>(200,report);
+            return report;
+        }
+
+        Task<ReportDTO> IReportService.GetReportByCompanyId(string id)
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -7,6 +7,7 @@ using Nowadays.Services.Concrete;
 using Nowadays.Models.ValueObject;
 using AutoMapper;
 using Nowadays.Models.DTOs;
+using IdentityService;
 
 namespace Nowadays.Controllers
 {
@@ -37,7 +38,8 @@ namespace Nowadays.Controllers
         public async Task<ResponseModel> CreateEmployee([FromBody] EmployeeDTO employee)
         {
             var employeeModel = _mapper.Map<Employee>(employee);
-            var response = await _employeeService.InsertAsync(employeeModel);
+            bool result = await IdentityVerification(employee);
+            var response = await _employeeService.InsertAsync(employeeModel, result);
             return response;
         }
         [HttpPut]
@@ -59,6 +61,14 @@ namespace Nowadays.Controllers
         {
             var response = await _employeeService.DeleteAsync(id);
             return response;
+        }
+
+        private async Task<bool> IdentityVerification(EmployeeDTO employee)
+        {
+            var client = new KPSPublicSoapClient(KPSPublicSoapClient.EndpointConfiguration.KPSPublicSoap);
+            var response = await client.TCKimlikNoDogrulaAsync(Convert.ToInt64(employee.IdentityNo), employee.Name, employee.SurName, employee.BirthDateYear);
+            var result = response.Body.TCKimlikNoDogrulaResult;
+            return result;
         }
     }
 }

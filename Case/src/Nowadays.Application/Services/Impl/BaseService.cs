@@ -1,9 +1,7 @@
-﻿using Nowadays.Models.Base;
-using Nowadays.Models.ResponseModels;
-using Nowadays.Repositories.Abstract;
-using Nowadays.Services.Abstract.Base;
+﻿using Nowadays.Core.Common;
+using Nowadays.DataAccess.Repositories;
 
-namespace Nowadays.Services.Concrete.Base
+namespace Nowadays.Application.Services.Impl
 {
     public abstract class BaseService<TEntity> : IBaseService<TEntity> where TEntity : BaseEntity
     {
@@ -15,13 +13,13 @@ namespace Nowadays.Services.Concrete.Base
             _unitOfWork = unitOfWork;
             _baseRepository = baseRepository;
         }
-        public async Task<ResponseModel<IEnumerable<TEntity>>> GetAll()
+        public async Task<IEnumerable<TEntity>> GetAll()
         {
             var entity = await _baseRepository.GetAll();
-            return new ResponseModel<IEnumerable<TEntity>>(200, entity.Model);
+            return entity;
         }
 
-        public async virtual Task<ResponseModel<TEntity>> GetById(string id)
+        public async virtual Task<TEntity> GetById(string id)
         {
             try
             {
@@ -30,16 +28,16 @@ namespace Nowadays.Services.Concrete.Base
                 {
                     throw new Exception("Data is not found");
                 }
-                return new ResponseModel<TEntity>(200, entity.Model);
+                return entity;
             }
             catch (Exception ex)
             {
-                return new ResponseModel<TEntity>(404, ex);
+                throw new Exception($"Data is not found: {ex}");
             }
 
         }
 
-        public virtual async Task<ResponseModel> InsertAsync(TEntity entity)
+        public virtual async Task<TEntity> InsertAsync(TEntity entity, bool? tCKimlikNoDogrulaResult = null)
 
         {
             try
@@ -49,17 +47,17 @@ namespace Nowadays.Services.Concrete.Base
                     throw new Exception("Model is not valid.");
                 }
                 var result = await _baseRepository.InsertAsync(entity);
-                await _unitOfWork.CompleteTaskAsync();
+                _unitOfWork.CompleteTask();
                 return result;
             }
             catch (Exception ex)
             {
-                return new ResponseModel(400, ex.Message);
+                throw new Exception($"Model is not valid. {ex.Message}");
             }
 
         }
 
-        public virtual async Task<ResponseModel> UpdateAsync(string id, TEntity entity)
+        public virtual async Task<TEntity> UpdateAsync(string id, TEntity entity)
         {
             try
             {
@@ -69,16 +67,16 @@ namespace Nowadays.Services.Concrete.Base
                     throw new Exception("Data is not found");
                 }
                 var result = _baseRepository.Update(entity);
-                await _unitOfWork.CompleteTaskAsync();
+                _unitOfWork.CompleteTask();
                 return result;
             }
             catch (Exception ex)
             {
-                return new ResponseModel(404, ex.Message);
+                throw new Exception($"Data is not found: {ex.Message}");
             }
 
         }
-        public async Task<ResponseModel> DeleteAsync(string id)
+        public async Task<TEntity> DeleteAsync(string id)
         {
 
             try
@@ -88,13 +86,13 @@ namespace Nowadays.Services.Concrete.Base
                 {
                     throw new Exception("Data is not found");
                 }
-                var result = _baseRepository.Delete(tempEntity.Model);
-                await _unitOfWork.CompleteTaskAsync();
+                var result = _baseRepository.Delete(tempEntity);
+                _unitOfWork.CompleteTask();
                 return result;
             }
             catch (Exception ex)
             {
-                return new ResponseModel(404, ex.Message);
+                throw new Exception($"Data is not found: {ex.Message}");
             }
 
         }
