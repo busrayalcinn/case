@@ -17,23 +17,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-var mapperConfig = new MapperConfiguration(mc =>
-{
-    mc.AddProfile(new AutoMapperProfiles());
-});
-IMapper mapper = mapperConfig.CreateMapper();
-
-
-builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
-
-builder.Services.AddSingleton(mapper);
-
-builder.Services.AddScoped<ICompanyService, CompanyService>();
-builder.Services.AddScoped<IEmployeeService, EmployeeService>();
-builder.Services.AddScoped<IIssueService, IssueService>();
-builder.Services.AddScoped<IProjectService, ProjectService>();
-builder.Services.AddScoped<IReportService, ReportService>();
-
+builder.Services.AddApplication();
 
 var app = builder.Build();
 
